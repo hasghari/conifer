@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require 'erb'
 
 module Conifer
   class File
@@ -15,8 +16,12 @@ module Conifer
     end
 
     def [](key)
-      args = key.split('.').tap { |v| v.prepend(prefix) if prefix.present? }
+      args = key.split('.').tap { |v| v.prepend(prefix) if prefix }
       config.dig(*args)
+    end
+
+    def as_hash
+      config
     end
 
     private
