@@ -10,10 +10,11 @@ module Conifer
 
   class_methods do
     def conifer(file, prefix: nil, dir: nil, method: ::File.basename(file.to_s, '.yml'), singleton: false)
+      directory = dir || ::File.expand_path(::File.dirname(caller_locations.first.path))
+
       body = proc do
         return instance_variable_get("@conifer_#{method}") if instance_variable_defined?("@conifer_#{method}")
 
-        directory = dir || ::File.expand_path(::File.dirname(caller_locations.first.path))
         instance_variable_set "@conifer_#{method}", Conifer::File.new(file, prefix: prefix, dir: directory)
       end
 
