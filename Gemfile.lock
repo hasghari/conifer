@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    conifer (0.3.0)
+    conifer (1.0.0)
 
 GEM
   remote: https://rubygems.org/
