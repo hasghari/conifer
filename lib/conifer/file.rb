@@ -17,33 +17,43 @@ module Conifer
 
     def [](key)
       args = key.split('.').tap { |v| v.prepend(prefix) if prefix }
-      config.dig(*args)
+      parsed.dig(*args)
     end
 
-    def as_hash
-      config
+    def parsed
+      @parsed ||= YAML.safe_load(ERB.new(::File.read(path)).result)
+    end
+
+    def path
+      return @path if defined? @path
+
+      @path = find_path
+    end
+
+    def exists?
+      !path.nil?
+    end
+
+    def filename
+      "#{::File.basename(name.to_s, '.yml')}.yml"
+    end
+
+    def validate!
+      raise NotFoundError, "Could not find file #{filename}" if path.nil?
     end
 
     private
 
-    def config
-      @config ||= YAML.safe_load(ERB.new(::File.read(path)).result)
-    end
-
-    def path(directory = dir)
+    def find_path(directory = dir)
       file = ::File.join(directory, filename).to_s
 
       if ::File.exist?(file)
         file
       else
-        raise NotFoundError, "Could not find file #{filename}" if directory == '/'
+        return if directory == '/'
 
-        path(::File.expand_path('..', directory))
+        find_path(::File.expand_path('..', directory))
       end
-    end
-
-    def filename
-      "#{::File.basename(name.to_s, '.yml')}.yml"
     end
   end
 end

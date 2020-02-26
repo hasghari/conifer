@@ -3,19 +3,19 @@
 require 'conifer/version'
 require 'conifer/file'
 
-require 'active_support/concern'
-
 module Conifer
-  extend ActiveSupport::Concern
+  def self.included(base)
+    base.extend ClassMethods
+  end
 
-  class_methods do
-    def conifer(file, prefix: nil, dir: nil, method: ::File.basename(file.to_s, '.yml'), singleton: false)
-      directory = dir || ::File.expand_path(::File.dirname(caller_locations.first.path))
+  module ClassMethods
+    def conifer(name, prefix: nil, dir: nil, method: ::File.basename(name.to_s, '.yml'), singleton: false)
+      dir ||= ::File.expand_path(::File.dirname(caller_locations.first.path))
 
       body = proc do
         return instance_variable_get("@conifer_#{method}") if instance_variable_defined?("@conifer_#{method}")
 
-        instance_variable_set "@conifer_#{method}", Conifer::File.new(file, prefix: prefix, dir: directory)
+        instance_variable_set "@conifer_#{method}", Conifer::File.new(name, prefix: prefix, dir: dir).tap(&:validate!)
       end
 
       if singleton
