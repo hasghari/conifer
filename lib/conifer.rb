@@ -9,7 +9,7 @@ module Conifer
   extend ActiveSupport::Concern
 
   class_methods do
-    def conifer(file, prefix: nil, dir: nil, method: 'conifer', singleton: false)
+    def conifer(file, prefix: nil, dir: nil, method: ::File.basename(file.to_s, '.yml'), singleton: false)
       body = proc do
         return instance_variable_get("@conifer_#{method}") if instance_variable_defined?("@conifer_#{method}")
 

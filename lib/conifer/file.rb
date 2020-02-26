@@ -31,15 +31,19 @@ module Conifer
     end
 
     def path(directory = dir)
-      file = ::File.join(directory, name).to_s
+      file = ::File.join(directory, filename).to_s
 
       if ::File.exist?(file)
         file
       else
-        raise NotFoundError, "Could not find file #{name}" if directory == '/'
+        raise NotFoundError, "Could not find file #{filename}" if directory == '/'
 
         path(::File.expand_path('..', directory))
       end
+    end
+
+    def filename
+      "#{::File.basename(name.to_s, '.yml')}.yml"
     end
   end
 end
