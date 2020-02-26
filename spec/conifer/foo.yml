@@ -1,0 +1,9 @@
+foo: bar
+
+development:
+  aws:
+    secret_key: 12345
+  log_level: debug
+
+test:
+  log_level: fatal
