@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Hamed Asghari']
   spec.email         = ['hasghari@gmail.com']
 
-  spec.summary       = 'This is a gem to manage multiple, optionally environment-based YAML configurations'
-  spec.description   = 'This is a gem to manage multiple, optionally environment-based YAML configurations'
+  spec.summary       = 'Conifer allows you to easily manage YAML configuration files and import them into your objects.'
+  spec.description   = 'Conifer allows you to easily manage YAML configuration files and import them into your objects.'
   spec.homepage      = 'https://github.com/hasghari/conifer'
   spec.license       = 'MIT'
 
