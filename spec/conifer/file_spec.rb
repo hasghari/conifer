@@ -100,11 +100,13 @@ RSpec.describe Conifer::File do
       it 'returns value for key' do
         expect(file['log_level']).to eq 'debug'
       end
+    end
 
-      context 'with nested key' do
-        it 'returns value for key' do
-          expect(file['aws.secret_key']).to eq 12345
-        end
+    context 'with nested key' do
+      let(:prefix) { 'development' }
+
+      it 'returns value for key' do
+        expect(file['aws.secret_key']).to eq 12345
       end
     end
   end
