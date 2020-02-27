@@ -4,11 +4,12 @@ require 'climate_control'
 require 'conifer/file'
 
 RSpec.describe Conifer::File do
-  subject(:file) { described_class.new(name, dir: dir, prefix: prefix) }
+  subject(:file) { described_class.new(name, dir: dir, prefix: prefix, allowed_classes: allowed_classes) }
 
   let(:name) { :foo }
   let(:dir) { File.expand_path(__dir__) }
   let(:prefix) { nil }
+  let(:allowed_classes) { [] }
 
   describe '#path' do
     context 'when file is in current directory' do
@@ -82,6 +83,24 @@ RSpec.describe Conifer::File do
           expect(file.parsed).to eq('foo' => 'bar',
                                     'development' => { 'aws' => { 'secret_key' => 'secret' }, 'log_level' => 'debug' },
                                     'test' => { 'log_level' => 'fatal' })
+        end
+      end
+    end
+
+    context 'with non-primitive values' do
+      let(:name) { :dates }
+
+      context 'when type is not whitelisted' do
+        it 'raises error' do
+          expect { file.parsed }.to raise_error Psych::DisallowedClass
+        end
+      end
+
+      context 'when type is whitelisted' do
+        let(:allowed_classes) { [Date] }
+
+        it 'does not raise error' do
+          expect { file.parsed }.not_to raise_error
         end
       end
     end

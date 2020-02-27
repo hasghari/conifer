@@ -7,12 +7,13 @@ module Conifer
   class File
     NotFoundError = Class.new(StandardError)
 
-    attr_reader :name, :prefix, :dir
+    attr_reader :name, :prefix, :dir, :allowed_classes
 
-    def initialize(name, dir:, prefix: nil)
+    def initialize(name, dir:, prefix: nil, allowed_classes: [])
       @name = name
       @prefix = prefix
       @dir = dir
+      @allowed_classes = allowed_classes
     end
 
     def [](key)
@@ -21,7 +22,7 @@ module Conifer
     end
 
     def parsed
-      @parsed ||= YAML.safe_load(ERB.new(::File.read(path)).result)
+      @parsed ||= YAML.safe_load(ERB.new(::File.read(path)).result, allowed_classes)
     end
 
     def path
