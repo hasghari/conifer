@@ -13,8 +13,14 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.6.x
-      - name: Build and test with RSpec
+      - name: Configure Bundler
         run: |
           gem install bundler -v 1.17.3 --no-document
           bundle install --jobs 4 --retry 3
-          bundle exec rspec
+      - name: Run tests with RSpec
+        uses: paambaati/codeclimate-action@v2.5.3
+        env:
+          CC_TEST_REPORTER_ID: 0e4e712966b3d2fdf63128dc4d0c863fd4c61888b557ffb1673111b4c8b3bdc9
+        with:
+          coverageCommand: bundle exec rspec
+          debug: false

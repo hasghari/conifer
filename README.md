@@ -1,4 +1,6 @@
 ![](https://github.com/hasghari/conifer/workflows/Ruby/badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/f02c1de9e9d7dbfa5800/maintainability)](https://codeclimate.com/github/hasghari/conifer/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/f02c1de9e9d7dbfa5800/test_coverage)](https://codeclimate.com/github/hasghari/conifer/test_coverage)
 
 # Conifer
 
