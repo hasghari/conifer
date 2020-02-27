@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'climate_control'
 require 'conifer/file'
 
 RSpec.describe Conifer::File do
@@ -67,10 +68,22 @@ RSpec.describe Conifer::File do
   end
 
   describe '#parsed' do
-    it 'returns parsed content of file' do
-      expect(file.parsed).to eq('foo' => 'bar',
-                                'development' => { 'aws' => { 'secret_key' => 12345 }, 'log_level' => 'debug' },
-                                'test' => { 'log_level' => 'fatal' })
+    context 'when env variable is missing' do
+      it 'returns parsed content of file' do
+        expect(file.parsed).to eq('foo' => 'bar',
+                                  'development' => { 'aws' => { 'secret_key' => 12345 }, 'log_level' => 'debug' },
+                                  'test' => { 'log_level' => 'fatal' })
+      end
+    end
+
+    context 'when env variable is set' do
+      it 'returns value from environment variable' do
+        ClimateControl.modify AWS_SECRET_KEY: 'secret' do
+          expect(file.parsed).to eq('foo' => 'bar',
+                                    'development' => { 'aws' => { 'secret_key' => 'secret' }, 'log_level' => 'debug' },
+                                    'test' => { 'log_level' => 'fatal' })
+        end
+      end
     end
   end
 
