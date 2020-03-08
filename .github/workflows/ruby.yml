@@ -7,12 +7,18 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        ruby:
+          - 2.6.x
+          - 2.7.x
+
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Ruby 2.6
+      - name: Set up Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.6.x
+          ruby-version: ${{ matrix.ruby }}
       - name: Configure Bundler
         run: |
           gem install bundler -v 1.17.3 --no-document
