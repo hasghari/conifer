@@ -10,8 +10,8 @@ module Conifer
 
   # rubocop:disable Metrics/ParameterLists
   module ClassMethods
-    def conifer(name, prefix: nil, dir: nil, method: ::File.basename(name.to_s, '.yml'), singleton: false,
-                allowed_classes: [])
+    def conifer(name, prefix: nil, dir: nil, format: :yml, method: ::File.basename(name.to_s, ".#{format}"),
+                singleton: false, allowed_classes: [])
       dir ||= ::File.expand_path(::File.dirname(caller_locations.first.path))
 
       body = proc do

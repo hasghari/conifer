@@ -6,13 +6,15 @@ require 'erb'
 module Conifer
   class File
     NotFoundError = Class.new(StandardError)
+    UnsupportedFormatError = Class.new(StandardError)
 
-    attr_reader :name, :prefix, :dir, :allowed_classes
+    attr_reader :name, :dir, :prefix, :format, :allowed_classes
 
-    def initialize(name, dir:, prefix: nil, allowed_classes: [])
+    def initialize(name, dir:, prefix: nil, format: :yml, allowed_classes: [])
       @name = name
-      @prefix = prefix
       @dir = dir
+      @prefix = prefix
+      @format = format
       @allowed_classes = allowed_classes
     end
 
@@ -22,7 +24,14 @@ module Conifer
     end
 
     def parsed
-      @parsed ||= YAML.safe_load(ERB.new(::File.read(path)).result, allowed_classes)
+      @parsed ||= case format
+                  when :yml, :yaml
+                    YAML.safe_load(ERB.new(::File.read(path)).result, allowed_classes)
+                  when :json
+                    JSON.parse(ERB.new(::File.read(path)).result)
+                  else
+                    raise UnsupportedFormatError, "Format '#{format}' is not supported"
+                  end
     end
 
     def path
@@ -36,7 +45,7 @@ module Conifer
     end
 
     def filename
-      "#{::File.basename(name.to_s, '.yml')}.yml"
+      "#{::File.basename(name.to_s, ".#{format}")}.#{format}"
     end
 
     def validate!

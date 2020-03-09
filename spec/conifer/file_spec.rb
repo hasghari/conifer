@@ -4,10 +4,13 @@ require 'climate_control'
 require 'conifer/file'
 
 RSpec.describe Conifer::File do
-  subject(:file) { described_class.new(name, dir: dir, prefix: prefix, allowed_classes: allowed_classes) }
+  subject(:file) do
+    described_class.new(name, dir: dir, format: format, prefix: prefix, allowed_classes: allowed_classes)
+  end
 
   let(:name) { :foo }
   let(:dir) { File.expand_path(__dir__) }
+  let(:format) { :yml }
   let(:prefix) { nil }
   let(:allowed_classes) { [] }
 
@@ -84,6 +87,26 @@ RSpec.describe Conifer::File do
                                     'development' => { 'aws' => { 'secret_key' => 'secret' }, 'log_level' => 'debug' },
                                     'test' => { 'log_level' => 'fatal' })
         end
+      end
+    end
+
+    context 'with json format' do
+      let(:format) { :json }
+
+      it 'returns parsed content of file' do
+        ClimateControl.modify AWS_SECRET_KEY: 'secret' do
+          expect(file.parsed).to eq('foo' => 'bar',
+                                    'development' => { 'aws' => { 'secret_key' => 'secret' }, 'log_level' => 'debug' },
+                                    'test' => { 'log_level' => 'fatal' })
+        end
+      end
+    end
+
+    context 'with unsupported format' do
+      let(:format) { :ruby }
+
+      it 'raises error' do
+        expect { file.parsed }.to raise_error Conifer::File::UnsupportedFormatError
       end
     end
 
