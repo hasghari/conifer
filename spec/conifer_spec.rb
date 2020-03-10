@@ -52,6 +52,20 @@ RSpec.describe Conifer do
       end
     end
 
+    context 'with overridden format' do
+      let(:model) do
+        Class.new do
+          include Conifer
+
+          conifer :bar, format: :json
+        end
+      end
+
+      it 'finds correct file' do
+        expect(model.new.bar.path).to match 'spec/bar.json'
+      end
+    end
+
     context 'when singleton is true' do
       let(:model) do
         Module.new do

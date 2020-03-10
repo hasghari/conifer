@@ -18,8 +18,8 @@ module Conifer
         return instance_variable_get("@conifer_#{method}") if instance_variable_defined?("@conifer_#{method}")
 
         instance_variable_set "@conifer_#{method}",
-                              Conifer::File.new(name, prefix: prefix, dir: dir, allowed_classes: allowed_classes)
-                                .tap(&:validate!)
+                              Conifer::File.new(name, prefix: prefix, format: format,
+                                                      dir: dir, allowed_classes: allowed_classes).tap(&:validate!)
       end
 
       singleton ? define_singleton_method(method, &body) : define_method(method, &body)
