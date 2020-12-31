@@ -15,6 +15,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/hasghari/conifer'
   spec.license       = 'MIT'
 
+  spec.required_ruby_version = '>= 2.6'
+
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
@@ -24,11 +26,10 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler', '~> 1.17'
-  spec.add_development_dependency 'climate_control', '~> 0.2'
-  spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'rubocop', '~> 0.80'
-  spec.add_development_dependency 'rubocop-rspec', '~> 1.38'
-  spec.add_development_dependency 'simplecov', '0.16.1'
+  spec.add_development_dependency 'climate_control'
+  spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'rspec'
+  spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'rubocop-rspec'
+  spec.add_development_dependency 'simplecov'
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start { enable_coverage :branch }
 
 require 'bundler/setup'
 require 'conifer'
