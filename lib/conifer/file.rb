@@ -26,7 +26,7 @@ module Conifer
     def parsed
       @parsed ||= case format
                   when :yml, :yaml
-                    YAML.safe_load(ERB.new(::File.read(path)).result, allowed_classes)
+                    YAML.safe_load(ERB.new(::File.read(path)).result, permitted_classes: allowed_classes)
                   when :json
                     JSON.parse(ERB.new(::File.read(path)).result)
                   else
