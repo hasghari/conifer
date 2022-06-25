@@ -8,14 +8,14 @@ module Conifer
     NotFoundError = Class.new(StandardError)
     UnsupportedFormatError = Class.new(StandardError)
 
-    attr_reader :name, :dir, :prefix, :format, :allowed_classes
+    attr_reader :name, :dir, :prefix, :format, :options
 
-    def initialize(name, dir:, prefix: nil, format: :yml, allowed_classes: [])
+    def initialize(name, dir:, prefix: nil, format: :yml, **options)
       @name = name
       @dir = dir
       @prefix = prefix
       @format = format
-      @allowed_classes = allowed_classes
+      @options = options
     end
 
     def [](key)
@@ -26,9 +26,9 @@ module Conifer
     def parsed
       @parsed ||= case format
                   when :yml, :yaml
-                    YAML.safe_load(ERB.new(::File.read(path)).result, permitted_classes: allowed_classes)
+                    YAML.safe_load(ERB.new(::File.read(path)).result, **options)
                   when :json
-                    JSON.parse(ERB.new(::File.read(path)).result)
+                    JSON.parse(ERB.new(::File.read(path)).result, **options)
                   else
                     raise UnsupportedFormatError, "Format '#{format}' is not supported"
                   end
