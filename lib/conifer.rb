@@ -11,7 +11,7 @@ module Conifer
   # rubocop:disable Metrics/ParameterLists
   module ClassMethods
     def conifer(name, prefix: nil, dir: nil, format: :yml, method: ::File.basename(name.to_s, ".#{format}"),
-                singleton: false, allowed_classes: [])
+                singleton: false, **options)
       dir ||= ::File.expand_path(::File.dirname(caller_locations.first.path))
 
       body = proc do
@@ -19,7 +19,7 @@ module Conifer
 
         instance_variable_set "@conifer_#{method}",
                               Conifer::File.new(name, prefix: prefix, format: format,
-                                                      dir: dir, allowed_classes: allowed_classes).tap(&:validate!)
+                                                      dir: dir, **options).tap(&:validate!)
       end
 
       singleton ? define_singleton_method(method, &body) : define_method(method, &body)
