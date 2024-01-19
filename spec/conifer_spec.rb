@@ -2,7 +2,7 @@
 
 RSpec.describe Conifer do
   it 'has a version number' do
-    expect(Conifer::VERSION).not_to be nil
+    expect(Conifer::VERSION).not_to be_nil
   end
 
   describe '::conifer' do

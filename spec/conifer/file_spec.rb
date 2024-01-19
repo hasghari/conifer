@@ -42,7 +42,7 @@ RSpec.describe Conifer::File do
   describe '#exists?' do
     context 'when file exists' do
       it 'returns true' do
-        expect(file.exists?).to eq true
+        expect(file.exists?).to be true
       end
     end
 
@@ -50,7 +50,7 @@ RSpec.describe Conifer::File do
       let(:name) { :missing }
 
       it 'returns false' do
-        expect(file.exists?).to eq false
+        expect(file.exists?).to be false
       end
     end
   end
