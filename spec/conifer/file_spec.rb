@@ -5,7 +5,7 @@ require 'conifer/file'
 
 RSpec.describe Conifer::File do
   subject(:file) do
-    described_class.new(name, dir: dir, format: format, prefix: prefix, permitted_classes: permitted_classes)
+    described_class.new(name, dir:, format:, prefix:, permitted_classes:)
   end
 
   let(:name) { :foo }
