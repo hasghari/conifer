@@ -5,14 +5,14 @@ require 'conifer/file'
 
 RSpec.describe Conifer::File do
   subject(:file) do
-    described_class.new(name, dir:, format:, prefix:, permitted_classes:)
+    described_class.new(name, dir:, format:, prefix:, **options)
   end
 
   let(:name) { :foo }
   let(:dir) { File.expand_path(__dir__) }
   let(:format) { :yml }
   let(:prefix) { nil }
-  let(:permitted_classes) { [] }
+  let(:options) { {} }
 
   describe '#path' do
     context 'when file is in current directory' do
@@ -120,7 +120,7 @@ RSpec.describe Conifer::File do
       end
 
       context 'when type is whitelisted' do
-        let(:permitted_classes) { [Date] }
+        let(:options) { { permitted_classes: [Date] } }
 
         it 'does not raise error' do
           expect { file.parsed }.not_to raise_error

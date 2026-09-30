@@ -5,8 +5,11 @@ require 'erb'
 
 module Conifer
   class File
-    NotFoundError = Class.new(StandardError)
-    UnsupportedFormatError = Class.new(StandardError)
+    class NotFoundError < StandardError
+    end
+
+    class UnsupportedFormatError < StandardError
+    end
 
     attr_reader :name, :dir, :prefix, :format, :options
 
